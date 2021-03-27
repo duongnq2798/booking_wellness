@@ -1,5 +1,5 @@
 import Login from './Login';
-import HrDashboad from './HrDashboad';
+import HrDashboard from './HrDashboard';
 import VendorDashboard from './VendorDashboard';
 
-export {Login, HrDashboad, VendorDashboard};
+export {Login, HrDashboard, VendorDashboard};
