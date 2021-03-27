@@ -62,3 +62,6 @@ or
   - VENDOR ADMIN DASHBOARD
     - Account: `vendoradmin@gmail.com`
     - Password: `vendoradmin`
+
+- Design Flow
+  [Preview Design Flow](https://www.figma.com/file/o6cTJqBc2fqQvOO1gLdj15/Booking-Wellness-Sytem?node-id=0%3A1)
