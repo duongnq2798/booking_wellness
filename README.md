@@ -40,12 +40,6 @@
 
 or
 
-- Install
-
-  ```sh
-  npm install
-  ```
-
 - Run
 
   ```sh
