@@ -17,7 +17,7 @@ const initState = {
   dataEventDetail: {},
   reason: '',
   isReason: false,
-  dateFirst: date,
+  dateFirst: new Date(),
   dateSecond: date,
   dateThird: date,
   isDateFirst: false,
@@ -32,9 +32,10 @@ const vendorReducer = (state = initState, action) => {
       return {
         ...state,
         isShowEvent: !state.isShowEvent,
-        // isDateFirst: false,
-        // isDateSecond: false,
-        // isDateThird: false,
+        isDateFirst: false,
+        isDateSecond: false,
+        isDateThird: false,
+        isDateGroup: false,
       };
     case GET_EVENT_DETAIL:
       return {
