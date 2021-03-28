@@ -11,8 +11,6 @@ const HrDashboard = () => {
   const navigation = useNavigation();
 
   const _onShowView = value => {
-    console.log(value);
-
     setIsShowView(!isShowView);
   };
 

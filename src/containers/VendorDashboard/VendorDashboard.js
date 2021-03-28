@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
 import {
   View,
   Text,
@@ -9,38 +9,37 @@ import {
 import styles from './styles';
 import {dataHrEvent} from '../../helpers/dataHrEvent';
 import {useNavigation} from '@react-navigation/native';
+import {initState, vendorReducer} from './reducer';
+import {
+  onShowEventDetail,
+  getEventDetail,
+  setReasonReject,
+  onShowReasonReject,
+  setDateFirst,
+  setDateSecond,
+  setDateThird,
+  onShowDateFirst,
+  onShowDateSecond,
+  onShowDateThird,
+  onShowDateGroup,
+} from './action';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
-import moment from 'moment';
 
 const VendorDashboard = () => {
-  const [isShowView, setIsShowView] = useState(false);
-  const [eventItem, setEventItem] = useState(null);
-  const [reasonReject, setReasonReject] = useState();
-  const [isReason, setIsReason] = useState(false);
-  const [isDateOne, setIsDateOne] = useState(false);
-  const [dateOne, setDateOne] = useState(new Date());
-  const [isDateTwo, setIsDateTwo] = useState(false);
-  const [dateTwo, setDateTwo] = useState(new Date());
-  const [isDateThree, setIsDateThree] = useState(false);
-  const [dateThree, setDateThree] = useState(new Date());
-  const [isDateGroup, setIsDateGroup] = useState(false);
+  const [stateLocal, dispatchLocal] = useReducer(vendorReducer, initState);
   const navigation = useNavigation();
 
   const _onShowView = () => {
-    setIsShowView(!isShowView);
-    setIsDateOne(false);
-    setIsDateTwo(false);
-    setIsDateThree(false);
+    dispatchLocal(onShowEventDetail());
   };
 
   const _onShowReason = () => {
-    setIsReason(!isReason);
-    setIsShowView(false);
+    dispatchLocal(onShowReasonReject());
   };
 
   const _getListEvent = item => {
-    setEventItem(item);
+    dispatchLocal(getEventDetail(item));
   };
 
   const _onLogout = () => {
@@ -48,25 +47,29 @@ const VendorDashboard = () => {
   };
 
   const _onShowDateGroup = () => {
-    setIsDateGroup(!isDateGroup);
+    dispatchLocal(onShowDateGroup());
   };
 
   const _onShowDateOne = () => {
-    setIsDateOne(!isDateOne);
+    dispatchLocal(onShowDateFirst());
   };
 
   const _onShowDateTwo = () => {
-    setIsDateTwo(!isDateTwo);
+    dispatchLocal(onShowDateSecond());
   };
 
   const _onShowDateThree = () => {
-    setIsDateThree(!isDateThree);
+    dispatchLocal(onShowDateThird());
+  };
+
+  const setDateOne = () => {
+    dispatchLocal(setDateFirst());
   };
 
   return (
     <View style={styles.container}>
       <Modal
-        isVisible={isShowView}
+        isVisible={stateLocal.isShowEvent}
         onBackdropPress={_onShowView}
         useNativeDriverForBackdrop={true}
         useNativeDriver={true}>
@@ -77,50 +80,53 @@ const VendorDashboard = () => {
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Event Overview</Text>
             <Text style={styles.eventItemText}>
-              Event: {eventItem?.eventName}
+              Event: {stateLocal.dataEventDetail?.eventName}
             </Text>
             <Text style={styles.eventItemText}>
-              Vendor Name: {eventItem?.vendorName}
+              Vendor Name: {stateLocal.dataEventDetail?.vendorName}
             </Text>
             <Text style={styles.eventItemText}>
-              Created Date: {eventItem?.createdDate}
+              Created Date: {stateLocal.dataEventDetail?.createdDate}
             </Text>
             <Text style={styles.eventItemText}>
-              Confirm Date: {eventItem?.confirmDate}
+              Confirm Date: {stateLocal.dataEventDetail?.confirmDate}
             </Text>
             <Text style={styles.eventItemText}>
-              Status: {eventItem?.status}
+              Status: {stateLocal.dataEventDetail?.status}
             </Text>
           </ScrollView>
-          {isDateGroup && (
+          {stateLocal.isDateGroup && (
             <>
               <TouchableOpacity
                 style={styles.dateGroup}
                 onPress={_onShowDateOne}>
                 <Text style={styles.dateText}>
-                  {moment(dateOne).subtract(10, 'days').calendar().toString()}
+                  {stateLocal.dateFirst.toString()}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.dateGroup}
                 onPress={_onShowDateTwo}>
                 <Text style={styles.dateText}>
-                  {moment(dateTwo).subtract(10, 'days').calendar().toString()}
+                  {String(stateLocal.dateSecond)}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.dateGroup}
                 onPress={_onShowDateThree}>
                 <Text style={styles.dateText}>
-                  {moment(dateThree).subtract(10, 'days').calendar().toString()}
+                  {String(stateLocal.dateThird)}
                 </Text>
               </TouchableOpacity>
             </>
           )}
 
-          {isDateOne && (
+          {stateLocal.isDateFirst && (
             <>
-              <DatePicker date={dateOne} onDateChange={setDateOne} />
+              <DatePicker
+                date={stateLocal.dateFirst}
+                onDateChange={setDateOne}
+              />
               <TouchableOpacity
                 style={styles.createDate}
                 onPress={_onShowDateOne}>
@@ -129,9 +135,14 @@ const VendorDashboard = () => {
             </>
           )}
 
-          {isDateTwo && (
+          {stateLocal.isDateSecond && (
             <>
-              <DatePicker date={dateTwo} onDateChange={setDateTwo} />
+              <DatePicker
+                date={stateLocal.dateSecond}
+                onDateChange={() => {
+                  dispatchLocal(setDateSecond());
+                }}
+              />
               <TouchableOpacity
                 style={styles.createDate}
                 onPress={_onShowDateTwo}>
@@ -140,9 +151,14 @@ const VendorDashboard = () => {
             </>
           )}
 
-          {isDateThree && (
+          {stateLocal.isDateThird && (
             <>
-              <DatePicker date={dateThree} onDateChange={setDateThree} />
+              <DatePicker
+                date={stateLocal.dateThird}
+                onDateChange={() => {
+                  dispatchLocal(setDateThird());
+                }}
+              />
               <TouchableOpacity
                 style={styles.createDate}
                 onPress={_onShowDateThree}>
@@ -168,7 +184,7 @@ const VendorDashboard = () => {
         </View>
       </Modal>
       <Modal
-        isVisible={isReason}
+        isVisible={stateLocal.isReason}
         onBackdropPress={_onShowReason}
         useNativeDriverForBackdrop={true}
         useNativeDriver={true}>
@@ -177,9 +193,9 @@ const VendorDashboard = () => {
             <Text style={styles.modalTitle}>Please tell us the reason</Text>
             <TextInput
               style={styles.reasonInput}
-              value={reasonReject}
+              value={stateLocal.reason}
               onChangeText={text => {
-                setReasonReject(text);
+                dispatchLocal(setReasonReject(text));
               }}
             />
           </ScrollView>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useReducer} from 'react';
 import {
   View,
   Text,
@@ -9,36 +9,36 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {accountRole} from '../../helpers/Constants';
+import {setEmailLocal, setPasswordLocal} from './action';
+import {initState, loginReducer} from './reducer';
 import styles from './styles';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [stateLocal, dispatchLocal] = useReducer(loginReducer, initState);
   const navigation = useNavigation();
 
   const onChangeEmail = value => {
-    setEmail(value);
+    dispatchLocal(setEmailLocal(value));
   };
 
   const onChangePassword = value => {
-    setPassword(value);
+    dispatchLocal(setPasswordLocal(value));
   };
 
   const _onLogin = () => {
     if (
-      accountRole.HR_ADMIN_ACCOUNT === email &&
-      accountRole.HR_ADMIN_PASSWORD === password
+      accountRole.HR_ADMIN_ACCOUNT === stateLocal.email &&
+      accountRole.HR_ADMIN_PASSWORD === stateLocal.password
     ) {
       navigation.navigate('HrDashboad');
     } else if (
-      accountRole.VENDOR_ADMIN_ACCOUNT === email &&
-      accountRole.VENDOR_ADMIN_PASSWORD
+      accountRole.VENDOR_ADMIN_ACCOUNT === stateLocal.email &&
+      accountRole.VENDOR_ADMIN_PASSWORD === stateLocal.password
     ) {
       navigation.navigate('VendorDashboad');
     }
-    setEmail('');
-    setPassword('');
+    dispatchLocal(setEmailLocal(''));
+    dispatchLocal(setPasswordLocal(''));
   };
 
   return (
@@ -54,7 +54,7 @@ const Login = () => {
         <TextInput
           style={styles.inputType}
           onChangeText={text => onChangeEmail(text)}
-          value={email}
+          value={stateLocal.email}
           placeholder="Email"
           keyboardType="email-address"
         />
@@ -63,7 +63,7 @@ const Login = () => {
         <TextInput
           style={styles.inputType}
           onChangeText={text => onChangePassword(text)}
-          value={password}
+          value={stateLocal.password}
           placeholder="Password"
           secureTextEntry={true}
         />
