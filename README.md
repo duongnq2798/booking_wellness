@@ -14,6 +14,12 @@
   <a href="#credits">Credits</a>
 </p>
 
+<div align="center">
+
+![screenshot](https://media.giphy.com/media/JvseSerHNoE42vBkCm/giphy.gif)
+
+</div>
+
 ## Key Features
 
 - Manage wellness booking event
