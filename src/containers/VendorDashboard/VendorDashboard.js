@@ -1,4 +1,5 @@
-import React, {useState, useReducer} from 'react';
+//------------- Core
+import React, {useReducer} from 'react';
 import {
   View,
   Text,
@@ -6,9 +7,12 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import styles from './styles';
-import {dataHrEvent} from '../../helpers/dataHrEvent';
+//------------- Lib
 import {useNavigation} from '@react-navigation/native';
+import Modal from 'react-native-modal';
+import DatePicker from 'react-native-date-picker';
+//------------- Customs
+import {dataHrEvent} from '../../helpers/dataHrEvent';
 import {initState, vendorReducer} from './reducer';
 import {
   onShowEventDetail,
@@ -23,8 +27,7 @@ import {
   onShowDateThird,
   onShowDateGroup,
 } from './action';
-import Modal from 'react-native-modal';
-import DatePicker from 'react-native-date-picker';
+import styles from './styles';
 
 const VendorDashboard = () => {
   const [stateLocal, dispatchLocal] = useReducer(vendorReducer, initState);

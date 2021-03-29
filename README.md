@@ -1,4 +1,12 @@
-# BOOKING WELLNESS SYSTEM
+<h1 align="center">
+  <br>
+  <a ><img src="./images/logo_booking_wellness.jpg" alt="Wellness App" width="200" height="200"></a>
+  <br>
+  Wellness Booking
+  <br>
+</h1>
+
+<h4 align="center">A minimal Wellness Booking mobile app built on top of <a href="https://reactnative.dev/" target="_blank">React Native</a>.</h4>
 
 ## COMPANY HUMAN RESOURCE ACCOUNTS
 
