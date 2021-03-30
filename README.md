@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a ><img src="./images/logo_booking_wellness.jpg" alt="Wellness App" width="180" height="200"></a>
+  <a ><img src="./images/logo_booking_wellness.jpg" alt="Wellness App" width="140" height="200"></a>
   <br>
   Wellness Booking
   <br>
